@@ -22,6 +22,7 @@ export class Dep{
         }
     }
 }
+
 /**
  * 栈 - 先进后出
  * 用来保存当前的watcher

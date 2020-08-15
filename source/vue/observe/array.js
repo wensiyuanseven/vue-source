@@ -24,20 +24,22 @@ export let newObje = Object.create(arrayPrototype) // 创建一个原型为数�
 methods.forEach(method => {
     // 当外界调用data中的数组时，且使用了数组方法 - 会被先代理到下边的方法，但是内部还是会调用原生的方法，
     // 这样做，就是为了拦截数组方法，在里边加上一些处理逻辑
-    newObje[method] = function(...arg) {
+    newObje[method] = function(...arg) {  //函数劫持 切片编程  切开一个片 添加一些逻辑
         arrayPrototype[method].apply(this, arg)
-        // 有可能会push、unshift、splice第三个参数 添加一个对象，也需要做响应式处理
+        // 有可能会push、unshift、splice 第三个参数 添加一个对象，也需要做响应式处理
         let arrParams;
         switch(method){
             case 'push':
             case 'unshift':
                 arrParams = arg
                 break
-            case 'splice': // arg.slice(2) 是获取到splice新增的内容，第三个参数
+            case 'splice':  // arg.slice(2) 是获取到splice新增的内容，第三个参数
                 arrParams = arg.slice(2) // [1,2,3].slice(2) // 3 把参数前2想去掉，拿到第三个参数
                 break
         }
+
         if (arrParams) observerArray(arrParams)
+
         this.__ob__.dep.notify() // 通知视图更新
         console.log('需要更新视图 - --', this)
     }

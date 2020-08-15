@@ -1,16 +1,11 @@
-
-
-
-
-
-import Vue from '../source/index.js'
+import Vue from 'vue'
 const vm = new Vue({
     el: '#app',
     data() {
         return {
             name: 'i name is lxc',
             obj: {
-                name: 'xiao yu'
+                name: "名字"
             },
             age: 70,
             arr: [1, 2, {name: 'l'}]
@@ -39,14 +34,14 @@ vm.arr.push(4)
 
 /**
  * 一个组件对应一个dep吗
- * 答： 
+ * 答：
  * 一个属性，对应一个dep，但是一个组件对应一个watcher
- * 
+ *
  * 如果一个属性多次被赋值，假设赋值10次，那么会被编译10次，性能开销很大，vue源码中会对其进行优化，
  * 只会赋值最后一次。。
  *  异步更新
- * 
- * 
+ *
+ *
 */
 
 

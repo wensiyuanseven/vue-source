@@ -3,7 +3,6 @@
 
 let id = 0
 import { pushTarget, popTarget } from "./dep";
-import Vue from "..";
 export class Watcher{
     /**
      * vm: vue 实例
@@ -29,9 +28,9 @@ export class Watcher{
     get() {
         pushTarget(this)    // 第一次，会让渲染watcher 入栈, 让 Dep.target = watcher
                             // 组件更新 ，具体：更新前需要获取data中的数据，它会走getter，get方法中会判断是否有def.target
-                            // 有，则会把def.target也就是渲染watcher 收集起来 -> this.subs = [watcher] 
+                            // 有，则会把def.target也就是渲染watcher 收集起来 -> this.subs = [watcher]
                             // 当用户修改data中的属性时，会调用set方法 -> dep.notify() -> this.subs.forEach(watcher.updata())
-        this.getter()       
+        this.getter()
         popTarget()         // 当前 渲染watcher 出栈 ---> Dep.target = undefined
     }
     addDep(dep) {           // 同一个watcher不应该重复记录dep
@@ -68,8 +67,8 @@ function queueWatcher(watcher) {
         // vm.name = '1'
         // vm.name = '2'
         // vm.name = '3'
-        // ··· ··· 
-        // 以上赋值的操作都是同步的，异步方法会等待所有同步方法执行完毕后在调用 
+        // ··· ···
+        // 以上赋值的操作都是同步的，异步方法会等待所有同步方法执行完毕后在调用
         //  vue中是用的nextTick来实现的异步更新
         // setTimeout(flushQueue, 0)
         nextTick(flushQueue)

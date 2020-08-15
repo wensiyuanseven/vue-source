@@ -4,17 +4,17 @@
 import { observe } from "./index";
 import { newObje, observerArray } from "./array";
 import { Dep } from './dep'
-/** 
- * 数据响应式处理
+/**
+ *  数据响应式处理
  * 总结下：调用数组变异方法、this.$set、直接覆盖data中的数据，会触发vue的响应式
  */
 export class Observer{
     constructor(data) {
         this.dep = new Dep()                     // 此dep专门为数组设定
         Object.defineProperty(data, '__ob__', {  // 每个对象 包括数组，都会有一个__ob__属性，返回的是当前Observer实例
-            get: () => this    
+            get: () => this
         })
-        
+
             // 将用户数据使用defineProperty重新定义
         if (Array.isArray(data)) {
             // 当外界使用data中数组调用数组方法时，会首先到data.__proto__原型链上去查找
@@ -43,10 +43,12 @@ export class Observer{
 /**
  * 定义响应式数据变化
  */
+
 function defineReactive(data, key, value) {
-    
+
     let childOb = observe(value)        // 递归调用判断value是否是一个对象, new Objserver
-    let dep = new Dep()                 // dep 可以收集依赖, 收集的是 watcher 
+    // todo:1
+    let dep = new Dep()                 // dep 可以收集依赖, 收集的是 watcher
     Object.defineProperty(data, key, {  // vue 不支持ie8 及以下浏览器的原因
         get() {                         // 取值时，收集依赖
             if(Dep.target) {   // 判断是否有渲染watcher
@@ -66,7 +68,7 @@ function defineReactive(data, key, value) {
             // 且值为对象或数组都会被做响应式处理
             observe(newValue)
             value = newValue
-            dep.notify() // 赋值时，会把刚才存的watcher 重新执行         
+            dep.notify() // 赋值时，会把刚才存的watcher 重新执行
         }
     })
 }
